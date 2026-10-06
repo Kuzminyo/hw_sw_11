@@ -14,7 +14,10 @@ python -m venv .venv
 .venv\Scripts\activate      # Windows  (Linux/macOS: source .venv/bin/activate)
 pip install -r requirements.txt
 
-# 3. Сервер (таблиці створюються автоматично при старті)
+# 3. Міграції (створення таблиць)
+alembic upgrade head
+
+# 4. Сервер
 uvicorn main:app --reload
 ```
 
@@ -42,4 +45,13 @@ src/database/models.py     # ORM-модель Contact
 src/schemas.py             # Pydantic-схеми та валідація
 src/repository/contacts.py # робота з БД
 src/routes/contacts.py     # маршрути API
+migrations/                # міграції Alembic (URL БД береться з .env)
+```
+
+## Міграції
+
+```bash
+alembic revision --autogenerate -m "опис змін"   # після зміни моделей
+alembic upgrade head                            # застосувати
+alembic downgrade -1                            # відкотити останню
 ```
